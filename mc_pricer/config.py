@@ -1,0 +1,8 @@
+"""Global simulation constants."""
+
+
+
+BASIS_DEGREE = 3
+RANDOM_SEED = 42
+N_PATHS_DEFAULT = 50000
+CONFIDENCE_LEVEL = 0.95
