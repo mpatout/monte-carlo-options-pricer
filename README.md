@@ -12,7 +12,7 @@ Heston paths use Andersen's QE discretization. Variance reduction is Sobol QMC, 
 a Black-Scholes control variate fitted with an optimal beta. Delta comes from a pathwise
 estimator and vega from a likelihood ratio; the rest fall back to adaptive finite differences
 with Richardson extrapolation, reported next to a stability check across bump sizes so you can
-see when a Greek isn't worth trusting.
+see which Greeks the simulation actually pins down.
 
 ## Running it
 
@@ -31,12 +31,11 @@ result = run_pricer(ticker="AAPL", spot=225.0, strike=230.0,
 print(result["pricing_Q"]["price"], result["greeks"]["delta"])
 ```
 
-Validation covers intrinsic bounds, European equivalence and convergence sweeps. There's also a
-real-world P&L forecast under the fitted exercise policy, kept separate from the risk-neutral
-price since it answers a different question.
+Before calibration, `prepare_iv_data` filters the chain on volume, open interest, bid-ask spread
+and moneyness, so a thin strike can't distort the surface. Validation covers intrinsic bounds,
+European equivalence and convergence sweeps. There's also a real-world P&L forecast under the
+fitted exercise policy, kept separate from the risk-neutral price since it answers a different
+question.
 
 `docs/technical-notes.md` works through the math: the IV inversion, the Feller condition, the QE
 scheme, and the Q-to-P measure change.
-
-Market data is whatever yfinance returns. Thin chains produce unreliable surfaces, so
-`prepare_iv_data` filters on volume, spread and moneyness before anything is calibrated.
